@@ -1,52 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
     <style>
-        #webdirect-frame {
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            bottom: 0px;
-            right: 0px;
-            width: 100%;
-            height: 100%;
-            border: none;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            z-index: 999999;
-        }
+      #webdirect-frame {
+          position: fixed;
+          top: 0px;
+          left: 0px;
+          bottom: 0px;
+          right: 0px;
+          width: 100%;
+          height: 100%;
+          border: none;
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+          z-index: 999999;
+      }
     </style>
-</head>
+  </head>
 
-<body>
-    <iframe id="webdirect-frame" frameborder="0" allowfullscreen src=""></iframe>
-</body>
+  <body>
+    <iframe
+      id="webdirect-frame"
+      frameborder="0"
+      allowfullscreen
+      src=""
+    ></iframe>
+  </body>
 
-<script>
+  <script>
     let hostname = window.location.hostname;
-    let path = "/fmi/webd/"
-    let solution = "PJT_SYSTEM_DEV"
+    let path = "/fmi/webd/";
+    let solution = "PJT_SYSTEM_DEV";
     let uri = "https://" + hostname + path + solution;
     // Prevent Back button click
     history.pushState(null, null, document.title);
-    window.addEventListener('popstate', function () {
-        alert("You can not use the browser's navigation when using Wizard Software.")
-        history.pushState(null, null, document.title);
+    window.addEventListener("popstate", function () {
+      alert(
+        "You can not use the browser's navigation when using Wizard Software."
+      );
+      history.pushState(null, null, document.title);
     });
 
-    iframe = document.getElementById("webdirect-frame")
-    iframe.addEventListener('load', function () {
-        history.pushState(null, null, document.title);
-    })
+    iframe = document.getElementById("webdirect-frame");
+    iframe.addEventListener("load", function () {
+      history.pushState(null, null, document.title);
+    });
 
-    window.addEventListener('load', function () {
-        let hostname = window.location.hostname;
-        document.getElementById("webdirect-frame").src = uri;
-    })
-</script>
-
+    window.addEventListener("load", function () {
+      let hostname = window.location.hostname;
+      document.getElementById("webdirect-frame").src = uri;
+    });
+  </script>
 </html>
