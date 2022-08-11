@@ -1,4 +1,4 @@
-namespace WebDLanding;
+namespace WebDLanding.Models;
 
 public class AppModel
 {
