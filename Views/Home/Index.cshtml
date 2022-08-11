@@ -1,0 +1,45 @@
+﻿@model AppModel;
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+<style>
+    #webdirect-frame {
+        width: 100%;
+        height: 800px;
+        border: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        z-index: 999999;
+    }
+</style>
+
+<iframe id="webdirect-frame" frameborder="0" allowfullscreen src=""></iframe>
+
+@section Scripts {
+<script>
+    let hostname = 'lade.wizardsoftware.net';
+    let path = "/fmi/webd/";
+    let solution = "@Model.DatabaseName";
+    let uri = "https://" + hostname + path + solution;
+    // Prevent Back button click
+    history.pushState(null, null, '');
+    window.addEventListener("popstate", function () {
+        alert(
+            "You can not use the browser's navigation when using Wizard Software."
+        );
+        history.pushState(null, null, '');
+    });
+
+    iframe = document.getElementById("webdirect-frame");
+    iframe.addEventListener("load", function () {
+        history.pushState(null, null, '');
+    });
+
+    window.addEventListener("load", function () {
+        let hostname = window.location.hostname;
+        document.getElementById("webdirect-frame").src = uri;
+    });
+</script>
+}
