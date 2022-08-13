@@ -20,11 +20,13 @@ public class HomeController : Controller
         var vms = new List<AppModel> {
             new AppModel
             {
+                ServerName = "lade.wizardsoftware.net",
                 DatabaseName = "PJT_SYSTEM_SSODEV",
                 HostName = "https://localhost:7026"
             },
             new AppModel
             {
+                ServerName = "lade.wizardsoftware.net",
                 DatabaseName = "PJT_SYSTEM_SSODEV",
                 HostName = "https://lade.wizardsoftware.net"
             },
@@ -40,5 +42,15 @@ public class HomeController : Controller
         _logger.LogInformation("Request received for host: {host}. Serving App/System: {db}", hostName, vm.DatabaseName);
 
         return View(vm);
+    }
+
+    public IActionResult BackButton() 
+    {
+        return View();
+    }
+
+    public IActionResult Logoff()
+    {
+        return View();
     }
 }

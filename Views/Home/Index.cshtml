@@ -19,17 +19,15 @@
 
 @section Scripts {
 <script>
-    let hostname = 'lade.wizardsoftware.net';
+    let hostname = '@Model.ServerName';
     let path = "/fmi/webd/";
     let solution = "@Model.DatabaseName";
     let uri = "https://" + hostname + path + solution;
     // Prevent Back button click
     history.pushState(null, null, '');
     window.addEventListener("popstate", function () {
-        alert(
-            "You can not use the browser's navigation when using Wizard Software."
-        );
         history.pushState(null, null, '');
+        document.getElementById("webdirect-frame").contentWindow.postMessage("BackButtonPressed", "*");
     });
 
     iframe = document.getElementById("webdirect-frame");
