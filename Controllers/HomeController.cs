@@ -30,6 +30,12 @@ public class HomeController : Controller
                 DatabaseName = "PJT_SYSTEM_SSODEV",
                 HostName = "https://lade.wizardsoftware.net"
             },
+            new AppModel
+            {
+                ServerName = "lade.wizardsoftware.net",
+                DatabaseName = "PJT_SYSTEM_SSODEV",
+                HostName = "https://webdlanding.wizardsoftware.net"
+            },
         };
 
         var vm = vms.SingleOrDefault(h => h.HostName.Contains(hostName));
