@@ -5,8 +5,8 @@ name: Build and deploy ASP.Net Core app to Azure Web App - webdlanding
 
 on:
   push:
-    branches:
-      - main
+    tags: 
+     - v*
   workflow_dispatch:
 
 jobs:
