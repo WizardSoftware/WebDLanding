@@ -35,9 +35,13 @@
         history.pushState(null, null, '');
     });
 
-    window.addEventListener("load", function () {
-        let hostname = window.location.hostname;
+    window.addEventListener("DOMContentLoaded", function () {
         document.getElementById("webdirect-frame").src = uri;
+    });
+
+    window.addEventListener("beforeunload", function (e) {
+        e.preventDefault();
+        return e.returnValue = "Are you sure you want to exit?";
     });
 </script>
 }
