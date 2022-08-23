@@ -39,3 +39,10 @@ A sample of the web viewer content that must be provided on each layout:
 
 </html>
 ```
+
+## FileMaker Server Configuration
+
+1. Enable Home URL Support
+2. Add `https://webdlanding.wizardsoftware.net` as an allowed home url
+3. Restart FileMaker Services
+4. Add postMessage forwarding script as referenced in https://github.com/WizardSoftware/WebDLanding/issues/6
