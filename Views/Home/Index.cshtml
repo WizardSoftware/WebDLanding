@@ -34,7 +34,7 @@
     history.pushState(null, null, '');
     window.addEventListener("popstate", function () {
         history.pushState(null, null, '');
-        document.getElementById("webdirect-frame").contentWindow.postMessage("BackButtonPressed", "*");
+        document.getElementById("webdirect-frame").contentWindow.postMessage("@Constants.BackButtonPostEventName", "*");
     });
 
     iframe = document.getElementById("webdirect-frame");

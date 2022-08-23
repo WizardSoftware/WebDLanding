@@ -23,5 +23,10 @@
     "titleBar.inactiveForeground": "#15202b99",
     "commandCenter.border": "#15202b99"
   },
-  "peacock.color": "#f9e64f"
+  "peacock.color": "#f9e64f",
+  "cSpell.words": [
+    "HSTS",
+    "iframe",
+    "nlog"
+  ]
 }

@@ -7,8 +7,8 @@ namespace WebDLanding.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    List<AppModel> VMs = new List<AppModel> {
+    readonly List<AppModel> VMs = new()
+    {
             new AppModel
             {
                 ServerName = "lade.wizardsoftware.net",
