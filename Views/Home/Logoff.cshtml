@@ -1,3 +1,5 @@
-﻿@section Scripts {
-<script>top.location.href = 'https://localhost:7026';</script>
+﻿@model AppModel;
+
+@section Scripts {
+<script>top.location.href = '@Model.HostName';</script>
 }

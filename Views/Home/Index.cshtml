@@ -5,8 +5,13 @@
 }
 <style>
     #webdirect-frame {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
         width: 100%;
-        height: 800px;
+        height: 100%;
         border: none;
         margin: 0;
         padding: 0;
@@ -22,7 +27,9 @@
     let hostname = '@Model.ServerName';
     let path = "/fmi/webd/";
     let solution = "@Model.DatabaseName";
-    let uri = "https://" + hostname + path + solution;
+    let uri = "https://" + hostname + path + solution +
+        "?homeurl=https://webdlanding.wizardsoftware.net/home/logoff";
+
     // Prevent Back button click
     history.pushState(null, null, '');
     window.addEventListener("popstate", function () {
