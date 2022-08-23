@@ -8,16 +8,7 @@ public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
-    public IActionResult Index()
-    {
-        var hostName = Request.Host.Value;
-
-        var vms = new List<AppModel> {
+    List<AppModel> VMs = new List<AppModel> {
             new AppModel
             {
                 ServerName = "lade.wizardsoftware.net",
@@ -38,7 +29,16 @@ public class HomeController : Controller
             },
         };
 
-        var vm = vms.SingleOrDefault(h => h.HostName.Contains(hostName));
+    public HomeController(ILogger<HomeController> logger)
+    {
+        _logger = logger;
+    }
+
+    public IActionResult Index()
+    {
+        var hostName = Request.Host.Value;
+
+        var vm = VMs.SingleOrDefault(h => h.HostName.Contains(hostName));
 
         if (vm is null)
         {
@@ -50,13 +50,30 @@ public class HomeController : Controller
         return View(vm);
     }
 
-    public IActionResult BackButton() 
+    public IActionResult BackButton()
     {
         return View();
     }
 
     public IActionResult Logoff()
     {
-        return View();
+        // find the database from the referer [sic]
+        var referrer = new Uri(Request.Headers.Referer.ToString());
+        var localReferrerPath = referrer.LocalPath.ToString();
+        var startSub = localReferrerPath.LastIndexOf("/") + 1;
+        var subLength = localReferrerPath.Length - startSub;
+        var database = localReferrerPath.Substring(startSub, subLength);
+
+        // match our database to a host entry
+        var vm = VMs.SingleOrDefault(h => h.DatabaseName.Equals(database, StringComparison.OrdinalIgnoreCase));
+
+        if (vm is null)
+        {
+            return View("Error");
+        }
+
+        // you'd think we want to redirect here, but we need to issue a javascript
+        // `top.location.href = ` to escape the iframe inception we create for back button support/suppression
+        return View(vm);
     }
 }
