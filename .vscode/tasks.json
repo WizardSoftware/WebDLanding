@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/WebDLanding.csproj",
+                "${workspaceFolder}/src/WebDLanding/WebDLanding.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -33,7 +33,7 @@
                 "watch",
                 "run",
                 "--project",
-                "${workspaceFolder}/WebDLanding.csproj"
+                "${workspaceFolder}/src/WebDLanding/WebDLanding.csproj"
             ],
             "problemMatcher": "$msCompile"
         }
