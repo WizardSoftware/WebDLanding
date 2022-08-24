@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1"
+    />
+    <style>
+      #webdirect-frame {
+        position: fixed;
+        top: 0px;
+        left: 0px;
+        bottom: 0px;
+        right: 0px;
+        width: 100%;
+        height: 100%;
+        border: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        z-index: 999999;
+      }
+    </style>
+  </head>
+  <body>
+    <iframe
+      id="webdirect-frame"
+      frameborder="0"
+      allowfullscreen
+      src=""
+    ></iframe>
+
+    <script>
+      let hostname = "[server-dns]";
+      let path = "/fmi/webd/";
+      let solution = "[filemaker-file]";
+      let uri = "https://" + hostname + path + solution + 
+      "?homeurl=https://example.com/logoff.html";
+
+      // Prevent Back button click
+      history.pushState(null, null, "");
+      window.addEventListener("popstate", function () {
+        history.pushState(null, null, "");
+        let frames = Array.from(
+          document
+            .getElementById("webdirect-frame")
+            .contentWindow.document.getElementsByTagName("iframe")
+        );
+        if (frames.length) {
+          // fore each frame found, relay the event by re-posting it down to the child frame
+          frames.forEach((frame) => {
+            frame.contentWindow.postMessage("BackButtonPressed", "*");
+          });
+        }
+      });
+
+      iframe = document.getElementById("webdirect-frame");
+      iframe.addEventListener("load", function () {
+        history.pushState(null, null, "");
+      });
+
+      window.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("webdirect-frame").src = uri;
+      });
+
+      window.addEventListener("beforeunload", function (e) {
+        e.preventDefault();
+        return (e.returnValue = "Are you sure you want to exit?");
+      });
+    </script>
+  </body>
+</html>

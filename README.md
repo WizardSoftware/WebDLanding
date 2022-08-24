@@ -74,9 +74,9 @@ Update the `jwpc_prefs.xml` file located in the `/Web Publishing/conf/jwpc_prefs
 
 🪟➕R => services.msc => FileMaker Server => Restart
 
-### Add postMessage forwarding script as referenced in https://github.com/WizardSoftware/WebDLanding/issues/6
+### Add postMessage forwarding script as referenced in <https://github.com/WizardSoftware/WebDLanding/issues/6>
 
-Add the following snipet as a file named `message-forward.js` to FMServer Root Site `/HTTPServer/conf`:
+Add the following snippet as a file named `message-forward.js` to FMServer Root Site `/HTTPServer/conf`:
 
 ```js
 window.addEventListener("message", d => {
