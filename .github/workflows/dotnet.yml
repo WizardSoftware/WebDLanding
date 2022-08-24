@@ -3,6 +3,11 @@ name: .NET
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+      - 'src/SingleOriginSolution/**'
+      - '.github/**'
+      - '.vscode/**'
   pull_request:
     branches: [ "main" ]
 

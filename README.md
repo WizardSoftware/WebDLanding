@@ -84,7 +84,7 @@ A sample of the web viewer content that must be provided on each layout:
 
 Because the WebDLanding uses an iframe hosted (possibly) on a different site the intermediate Web-Direct responses must be amended to include the following script to forward events from its parent, down into its children.
 
-Add the following snipet as a file named `message-forward.js` to FMServer Root Site `/HTTPServer/conf`:
+Add the following snippet as a file named `message-forward.js` to FMServer Root Site `/HTTPServer/conf`:
 
 ```js
 window.addEventListener("message", d => {
