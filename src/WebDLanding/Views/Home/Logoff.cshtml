@@ -1,5 +1,5 @@
 ﻿@model AppModel;
 
 @section Scripts {
-<script>top.location.href = '@Model.HostName';</script>
+<script>top.location.href = '@Model.EntryHostUri.ToString()';</script>
 }

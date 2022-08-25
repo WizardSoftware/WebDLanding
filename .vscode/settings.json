@@ -25,9 +25,11 @@
   },
   "peacock.color": "#f9e64f",
   "cSpell.words": [
+    "homeurl",
     "HSTS",
     "iframe",
     "iframes",
-    "nlog"
+    "nlog",
+    "webd"
   ]
 }

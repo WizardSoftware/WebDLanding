@@ -24,16 +24,13 @@
 
 @section Scripts {
 <script>
-    let hostname = '@Model.ServerName';
-    let path = "/fmi/webd/";
-    let solution = "@Model.DatabaseName";
-    let uri = "https://" + hostname + path + solution +
-        "?homeurl=https://webdlanding.wizardsoftware.net/home/logoff";
+    let uri = "@Model.WebDirectFullUri.ToString()";
 
-    // Prevent Back button click
     history.pushState(null, null, '');
     window.addEventListener("popstate", function () {
+        // Prevent Back button click
         history.pushState(null, null, '');
+        // setup postMessage push to iframe (to be picked up and pushed into listening webviewer)
         document.getElementById("webdirect-frame").contentWindow.postMessage("@Constants.BackButtonPostEventName", "*");
     });
 
@@ -42,7 +39,7 @@
         history.pushState(null, null, '');
     });
 
-    window.addEventListener("DOMContentLoaded", function () {
+    window.addEventListener("load", function () {
         document.getElementById("webdirect-frame").src = uri;
     });
 

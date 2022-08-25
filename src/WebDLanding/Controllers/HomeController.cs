@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebDLanding.Models;
 
 namespace WebDLanding.Controllers;
@@ -11,21 +10,21 @@ public class HomeController : Controller
     {
             new AppModel
             {
-                ServerName = "lade.wizardsoftware.net",
+                WebDirectHostName = "lade.wizardsoftware.net",
                 DatabaseName = "PJT_SYSTEM_SSODEV",
-                HostName = "https://localhost:7026"
+                EntryHostName = "localhost:7026"
             },
             new AppModel
             {
-                ServerName = "lade.wizardsoftware.net",
+                WebDirectHostName = "lade.wizardsoftware.net",
                 DatabaseName = "PJT_SYSTEM_SSODEV",
-                HostName = "https://lade.wizardsoftware.net"
+                EntryHostName = "lade.wizardsoftware.net"
             },
             new AppModel
             {
-                ServerName = "lade.wizardsoftware.net",
+                WebDirectHostName = "lade.wizardsoftware.net",
                 DatabaseName = "PJT_SYSTEM_SSODEV",
-                HostName = "https://webdlanding.wizardsoftware.net"
+                EntryHostName = "webdlanding.wizardsoftware.net"
             },
         };
 
@@ -38,7 +37,7 @@ public class HomeController : Controller
     {
         var hostName = Request.Host.Value;
 
-        var vm = VMs.SingleOrDefault(h => h.HostName.Contains(hostName));
+        var vm = VMs.SingleOrDefault(h => h.EntryHostName.Equals(hostName));
 
         if (vm is null)
         {
@@ -48,11 +47,6 @@ public class HomeController : Controller
         _logger.LogInformation("Request received for host: {host}. Serving App/System: {db}", hostName, vm.DatabaseName);
 
         return View(vm);
-    }
-
-    public IActionResult BackButton()
-    {
-        return View();
     }
 
     public IActionResult Logoff()
