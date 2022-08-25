@@ -6,7 +6,7 @@ public class AppModel
     public string EntryHostScheme { get; set; } = "https";
     public string EntryHostName { get; set; } = default!;
 
-    public Uri EntryHostUri => new($"{{EntryHostScheme}}://{{EntryHostName}}");
+    public Uri EntryHostUri => new($"{EntryHostScheme}://{EntryHostName}");
 
     public string WebDirectHostScheme { get; set; } = "https";
     public string WebDirectHostName { get; set; } = default!;

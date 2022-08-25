@@ -1,43 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebDLanding.Models;
 
 namespace WebDLanding.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-    readonly List<AppModel> VMs = new()
-    {
-            new AppModel
-            {
-                WebDirectHostName = "lade.wizardsoftware.net",
-                DatabaseName = "PJT_SYSTEM_SSODEV",
-                EntryHostName = "localhost:7026"
-            },
-            new AppModel
-            {
-                WebDirectHostName = "lade.wizardsoftware.net",
-                DatabaseName = "PJT_SYSTEM_SSODEV",
-                EntryHostName = "lade.wizardsoftware.net"
-            },
-            new AppModel
-            {
-                WebDirectHostName = "lade.wizardsoftware.net",
-                DatabaseName = "PJT_SYSTEM_SSODEV",
-                EntryHostName = "webdlanding.wizardsoftware.net"
-            },
-        };
+    private readonly IAppModelFinder _finder;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(IAppModelFinder finder, ILogger<HomeController> logger)
     {
+        _finder = finder;
         _logger = logger;
     }
 
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
         var hostName = Request.Host.Value;
 
-        var vm = VMs.SingleOrDefault(h => h.EntryHostName.Equals(hostName));
+        var vm = await _finder.FindByEntryHostAsync(hostName);
 
         if (vm is null)
         {
@@ -49,17 +29,12 @@ public class HomeController : Controller
         return View(vm);
     }
 
-    public IActionResult Logoff()
+    public async Task<IActionResult> Logoff()
     {
         // find the database from the referer [sic]
         var referrer = new Uri(Request.Headers.Referer.ToString());
-        var localReferrerPath = referrer.LocalPath.ToString();
-        var startSub = localReferrerPath.LastIndexOf("/") + 1;
-        var subLength = localReferrerPath.Length - startSub;
-        var database = localReferrerPath.Substring(startSub, subLength);
 
-        // match our database to a host entry
-        var vm = VMs.SingleOrDefault(h => h.DatabaseName.Equals(database, StringComparison.OrdinalIgnoreCase));
+        var vm = await _finder.FindByReferrerUriAsync(referrer);
 
         if (vm is null)
         {

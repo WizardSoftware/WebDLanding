@@ -1,4 +1,5 @@
 using NLog.Web;
+using WebDLanding;
 
 var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
@@ -12,6 +13,8 @@ try
     // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
+
+    builder.Services.AddScoped<IAppModelFinder, AppSettingsAppModelFinder>();
 
     var app = builder.Build();
 
