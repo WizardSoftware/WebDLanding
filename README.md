@@ -1,58 +1,72 @@
 # WebDLanding
 
-Web-Direct Landing page for Wizard Web-Direct deployed solutions.
+The main solution provides a landing and routing page for Web-Direct deployed solutions hosted across multiple domains.
+
+If your needs are simple: one solution with all hosting on a single domain, you can use the [version located in `/src/SingleOriginSolution`](https://github.com/WizardSoftware/WebDLanding/tree/main/src/SingleOriginSolution).
 
 ## Features
 
 - Land multiple interfaces on a single site across different FileMaker Servers.
-- `onbeforeunload` support.
-- Back button suppression / integration.
+- Warn users before leaving the page that they may lose their work.
+- Suppress browser back button exiting the application.
+  - Support for integrating browser back button into a solution to call app-specific "back button" functionality.
 
-Use WebDLanding as a sort of reverse proxy for Web-Direct.
+WebDLanding acts as a sort of reverse proxy for Web-Direct. You can create user-friendly DNS records pointed at WebDLanding and then route them, behind the scenes to the correct FileMaker Server.
 
 Provide a best effort to warn users that refreshing the page, or otherwise navigating away will lose their place in the web-direct application. Note: support varies by browser.
 
 Avoid browser back button taking the user out of the solution. Provide support for solutions to listen to the native browser back button and react accordingly.
 
-## FileMaker Server Setup
+## Getting Started
 
-Update web.config in the FMServer Root Site `/HTTPServer/conf`:
+You must create and install this project as a separate website on a web server. It can be your FileMaker Server or a separate stand alone server. The main thing is separate DNS records.
+
+### Install and configure WebDLanding
+
+1. Setup the website on your web server, and copy the release files on to the website root.
+2. Create a cononical WebDLanding DNS entry for hosting the application.
+3. Create user-friendly DNS records for your Web-Direct solutions pointed at this site.
+4. Update the configuration (TODO: document options) for each site.
+
+### Allow WebDLanding to iframe your Web-Direct Solutions
+
+Update web.config in the FileMaker Server root site `/FileMaker Server/HTTPServer/conf`:
 
 ```xml
-<add name="Content-Security-Policy" value="frame-ancestors 'self' https://*.wizardsoftware.net" />
+<add name="Content-Security-Policy" value="frame-ancestors 'self' https://www.example.com" />
 ```
 
-This allows WebDLanding to iframe in the content of the web direct session.
+Replacing www.example.com with your cononical WebDLanding site from step #2 above. This allows WebDLanding to iframe in the content of the web direct session through it. 
 
-## FileMaker Server Configuration For Back Button Support
+### Add HomeURL Support to enable iframe inception escape:
 
-Support for the back button requires some further configuration on the FileMaker Server.
+Since the landing page uses an iframe, the native homeurl logout option will just create a loop of putting another iframe inside another iframe. This could pose challenges if a user logs in and out repeatedly. To avoid this, we use a `top.location.href` in our custom HomeURL logout page to escape to the top level.
 
-### Enable Home URL Support
+#### Enable Home URL Support for WebDLanding
 
-Update the `jwpc_prefs.xml` file located in the `/Web Publishing/conf/jwpc_prefs.xml`
+Update the `jwpc_prefs.xml` file located in the FileMaker Server install directory: `/FileMaker Server/Web Publishing/conf/jwpc_prefs.xml`
 
 ```xml
 <parameter name="homeurlenabled">yes</parameter>
 ```
 
-### Add `https://webdlanding.wizardsoftware.net` as an allowed home url
-
-Update the `jwpc_prefs.xml` file located in the `/Web Publishing/conf/jwpc_prefs.xml`
+Add `https://webdlanding.example.com` as an allowed home url
 
 ```xml
-<parameter name="customhomeurl">https://webdlanding.wizardsoftware.net</parameter>
+<parameter name="customhomeurl">https://webdlanding.example.com</parameter>
 ```
 
-### Restart FileMaker Services
+Finally restart FileMaker Server services
 
 🪟+ R => services.msc => FileMaker Server => Restart
 
-## Back Button Integration
+### FileMaker Server Configuration For Back Button Support
+
+Support for the back button requires some further configuration on the FileMaker Server.
 
 WebDLanding captures the Browser Back Button being pressed. When that occurrs, WebDLanding uses the `postMessage` api to signal that the back button was pressed. Web Viewers inside the solution can be configured to receive this event and react accordingly.
 
-### Web Viewer content for each layout
+#### Web Viewer content for each layout
 
 In order to receive this event, a web viewer must exist on the layout with the following content to receive the event posted from the parent window.
 
@@ -80,7 +94,7 @@ A sample of the web viewer content that must be provided on each layout:
 </html>
 ```
 
-### Add postMessage forwarding script to out going FileMaker Web-Direct requests
+#### Add postMessage forwarding script to out going FileMaker Web-Direct requests
 
 Because the WebDLanding uses an iframe hosted (possibly) on a different site the intermediate Web-Direct responses must be amended to include the following script to forward events from its parent, down into its children.
 
@@ -99,9 +113,9 @@ window.addEventListener("message", d => {
 });
 ```
 
-### Web.Config Mods
+#### Web.Config Modifications
 
-We need to modify the web.config in FMServer Root Site `/HTTPServer/conf` to add an extra script tag that will forward messages sent from the parent page down into the web viewers.
+We need to modify the web.config in FMServer Root Site `/FileMaker Server/HTTPServer/conf` to add an extra script tag that will forward messages sent from the parent page down into the web viewers.
 
 Update the existing inbound rule: `FMWebPublishing` adding two http server variables:
 
