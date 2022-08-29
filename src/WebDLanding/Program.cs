@@ -40,6 +40,10 @@ try
         var jsToWrite = $"let singleServerMode = {siteSettings.SingleServerMode.ToString().ToLower()};";
         jsToWrite += $"let uri = '{model.WebDirectFullUri}';";
         jsToWrite += $"let backEventName = '{Globals.BackButtonPostEventName}';";
+        var homeUri = siteSettings.SingleServerMode == true 
+            ? $"{model.EntryHostScheme}://{model.EntryHostName}" 
+            : $"{siteSettings.WebdLandingMainUrl}";
+        jsToWrite += $"let homeUri = '{homeUri}';";
 
         context.Response.ContentType = "application/javascript; charset=utf-8";
         await context.Response.WriteAsync(jsToWrite);

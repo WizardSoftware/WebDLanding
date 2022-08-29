@@ -30,6 +30,7 @@
     "iframe",
     "iframes",
     "nlog",
-    "webd"
+    "webd",
+    "webdirect"
   ]
 }

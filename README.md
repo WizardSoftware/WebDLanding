@@ -198,7 +198,7 @@ Add two PreConditions which are used by both outgoing rules.
 <preConditions>
   <preCondition name="IsHTML">
     <add input="{RESPONSE_CONTENT_TYPE}" pattern="^text/html" />
-    <add input="{URL}" pattern="^fmi/(.*)" />
+    <add input="{URL}" pattern="^/fmi/(.*)" />
   </preCondition>
   <preCondition name="NeedsRestoringAcceptEncoding">
     <add input="{HTTP_X_ORIGINAL_ACCEPT_ENCODING}" pattern=".+" />
