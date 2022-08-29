@@ -27,11 +27,33 @@
     let uri = "@Model.WebDirectFullUri.ToString()";
 
     history.pushState(null, null, '');
+
     window.addEventListener("popstate", function () {
         // Prevent Back button click
         history.pushState(null, null, '');
-        // setup postMessage push to iframe (to be picked up and pushed into listening webviewer)
-        document.getElementById("webdirect-frame").contentWindow.postMessage("@Constants.BackButtonPostEventName", "*");
+
+        // select backbutton integration mode
+        let singleServerMode = JSON.parse('@(Model != null)'.toLowerCase());
+        if (singleServerMode === false) {
+            // setup postMessage push to iframe (to be picked up and pushed into listening webviewer)
+            // via injected /message-forward.js
+            document.getElementById("webdirect-frame").contentWindow.postMessage("@Globals.BackButtonPostEventName", "*");
+        }
+        else {
+            // find the main iframe, then naviage through its children iframes and post the message
+            // this only works on single origin solutions.
+            let frames = Array.from(
+                document
+                    .getElementById("webdirect-frame")
+                    .contentWindow.document.getElementsByTagName("iframe")
+            );
+            if (frames.length) {
+                // fore each frame found, relay the event by re-posting it down to the child frame
+                frames.forEach((frame) => {
+                    frame.contentWindow.postMessage("@Globals.BackButtonPostEventName", "*");
+                });
+            }
+        }
     });
 
     iframe = document.getElementById("webdirect-frame");

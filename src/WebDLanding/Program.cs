@@ -16,6 +16,8 @@ try
 
     builder.Services.AddScoped<IAppModelFinder, AppSettingsAppModelFinder>();
 
+    builder.Services.AddSingleton(builder.Configuration.GetSection("WebDLandingConfig").Get<WebDLanding.Models.SiteConfiguration>());
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.

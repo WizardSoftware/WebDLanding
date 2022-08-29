@@ -1,6 +1,6 @@
 namespace WebDLanding;
 
-public class Constants
+public class Globals
 {
     public const string BackButtonPostEventName = "BackButtonPressed";
 }
