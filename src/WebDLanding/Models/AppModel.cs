@@ -11,12 +11,10 @@ public class AppModel
     public string WebDirectHostScheme { get; set; } = "https";
     public string WebDirectHostName { get; set; } = default!;
 
-    private readonly string _queryString = "?homeurl=https://webdlanding.wizardsoftware.net/home/logoff";
-
     public Uri WebDirectHostUri => new($"{WebDirectHostScheme}://{WebDirectHostName}");
 
     public Uri WebDirectFullUri => new(
-        uriString: $"{WebDirectHostScheme}://{WebDirectHostName}/fmi/webd/{DatabaseName}{_queryString}"
+        uriString: $"{WebDirectHostScheme}://{WebDirectHostName}/fmi/webd/{DatabaseName}"
     );
 
 }

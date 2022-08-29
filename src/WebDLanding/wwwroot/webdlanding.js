@@ -4,17 +4,15 @@ window.addEventListener("popstate", function () {
   // Prevent Back button click
   history.pushState(null, null, "");
 
-  console.log(singleServerMode);
-
-  // select backbutton integration mode
+  // select back button integration mode
   if (singleServerMode === false) {
-    // setup postMessage push to iframe (to be picked up and pushed into listening webviewer)
+    // setup postMessage push to iframe (to be picked up and pushed into listening web viewer)
     // via injected /message-forward.js
     document
       .getElementById("webdirect-frame")
       .contentWindow.postMessage(backEventName, "*");
   } else {
-    // find the main iframe, then naviage through its children iframes and post the message
+    // find the main iframe, then navigate through its children iframes and post the message
     // this only works on single origin solutions.
     let frames = Array.from(
       document
@@ -36,6 +34,9 @@ iframe.addEventListener("load", function () {
 });
 
 window.addEventListener("load", function () {
+  if (homeUri) {
+    uri = uri + "?homeurl=" + homeUri + "/logoff.html";
+  }
   document.getElementById("webdirect-frame").src = uri;
 });
 
