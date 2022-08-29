@@ -7,37 +7,50 @@ try
 {
     var builder = WebApplication.CreateBuilder(args);
 
-    // Add services to the container.
-    builder.Services.AddControllersWithViews();
-
     // NLog: Setup NLog for Dependency injection
     builder.Logging.ClearProviders();
     builder.Host.UseNLog();
 
     builder.Services.AddScoped<IAppModelFinder, AppSettingsAppModelFinder>();
 
-    builder.Services.AddSingleton(builder.Configuration.GetSection("WebDLandingConfig").Get<WebDLanding.Models.SiteConfiguration>());
+    var siteSettings = builder.Configuration.GetSection("WebDLandingConfig").Get<WebDLanding.Models.SiteConfiguration>();
+    builder.Services.AddSingleton(siteSettings);
 
     var app = builder.Build();
 
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsDevelopment())
     {
-        app.UseExceptionHandler("/Home/Error");
-        // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
         app.UseHsts();
     }
 
     app.UseHttpsRedirection();
+
+    // show index.html from wwwroot
+    app.UseDefaultFiles();
+
     app.UseStaticFiles();
 
     app.UseRouting();
 
-    app.UseAuthorization();
+    app.MapGet("/set-vars.js", async (IAppModelFinder finder, HttpContext context) =>
+    {
+        var model = await finder.FindByEntryHostAsync(context.Request.Host.Value);
 
-    app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
+        var jsToWrite = $"let singleServerMode = {siteSettings.SingleServerMode.ToString().ToLower()};";
+        jsToWrite += $"let uri = '{model.WebDirectFullUri}';";
+        jsToWrite += $"let backEventName = '{Globals.BackButtonPostEventName}';";
+
+        context.Response.ContentType = "application/javascript; charset=utf-8";
+        await context.Response.WriteAsync(jsToWrite);
+    });
+
+    app.MapGet("/logoff.js", async (IAppModelFinder finder, HttpContext context) =>
+    {
+        var model = await finder.FindByEntryHostAsync(context.Request.Host.Value);
+        context.Response.ContentType = "application/javascript; charset=utf-8";
+        await context.Response.WriteAsync($"top.location.href = '{model.EntryHostUri}';");
+    });
 
     app.Run();
 }
