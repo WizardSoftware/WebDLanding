@@ -40,7 +40,23 @@ window.addEventListener("load", function () {
   document.getElementById("webdirect-frame").src = uri;
 });
 
+let allowExit = false;
+
+window.addEventListener("message", (d) => {
+  if (d.data == 'allow-exit') {
+    allowExit = true;
+    if (homeUri) {
+      uri = uri + "?homeurl=" + homeUri + "/logoff.html";
+    }
+    document.getElementById("webdirect-frame").src = uri;
+  }
+});
+
 window.addEventListener("beforeunload", function (e) {
-  e.preventDefault();
-  return (e.returnValue = "Are you sure you want to exit?");
+  if (allowExit) {
+    return;
+  } else {
+    e.preventDefault();
+    return (e.returnValue = "Are you sure you want to exit?");
+  }
 });
