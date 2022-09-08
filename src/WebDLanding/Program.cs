@@ -1,7 +1,7 @@
 using NLog.Web;
 using WebDLanding;
 
-var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+var logger = NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 
 try
 {
@@ -13,7 +13,10 @@ try
 
     builder.Services.AddScoped<IAppModelFinder, AppSettingsAppModelFinder>();
 
-    var siteSettings = builder.Configuration.GetSection("WebDLandingConfig").Get<WebDLanding.Models.SiteConfiguration>();
+    var siteSettings = builder
+        .Configuration
+        .GetSection("WebDLandingConfig")
+        .Get<WebDLanding.Models.SiteConfiguration>();
     builder.Services.AddSingleton(siteSettings);
 
     var app = builder.Build();
@@ -40,20 +43,13 @@ try
         var jsToWrite = $"let singleServerMode = {siteSettings.SingleServerMode.ToString().ToLower()};";
         jsToWrite += $"let uri = '{model.WebDirectFullUri}';";
         jsToWrite += $"let backEventName = '{Globals.BackButtonPostEventName}';";
-        var homeUri = siteSettings.SingleServerMode == true 
-            ? $"{model.EntryHostScheme}://{model.EntryHostName}" 
+        var homeUri = siteSettings.SingleServerMode == true
+            ? $"{model.EntryHostScheme}://{model.EntryHostName}"
             : $"{siteSettings.WebdLandingMainUrl}";
         jsToWrite += $"let homeUri = '{homeUri}';";
 
         context.Response.ContentType = "application/javascript; charset=utf-8";
         await context.Response.WriteAsync(jsToWrite);
-    });
-
-    app.MapGet("/logoff.js", async (IAppModelFinder finder, HttpContext context) =>
-    {
-        var model = await finder.FindByEntryHostAsync(context.Request.Host.Value);
-        context.Response.ContentType = "application/javascript; charset=utf-8";
-        await context.Response.WriteAsync($"top.location.href = '{model.EntryHostUri}';");
     });
 
     app.Run();
