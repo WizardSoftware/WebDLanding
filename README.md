@@ -40,16 +40,19 @@ This must be configured in your DNS host.
 
 This could be with a wildcard binding, or specific bindings. The key is that all DNS entries used are the same for both the landing (entry) and the web direct host.
 
-5. Update `appsettings.json` to include your site(s) in the AppModels section.
+5. Update `appsettings.json` to include your site(s) in the AppModels section and specify server mode (Single in this case).
 
 ```json
-"AppModels": [
+  "WebDLandingConfig":{
+    "SingleServerMode": true
+  },
+  "AppModels": [
     {
       "EntryHostName": "webdirect.example.com",
       "DatabaseName": "FileMakerFile",
       "WebDirectHostName": "webdirect.example.com"
     }
-  ]
+  ],
 ```
 
 6. Modify the `web.config` file to include the ASP.NET Core hosting modules:
