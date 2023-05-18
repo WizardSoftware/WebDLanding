@@ -29,7 +29,7 @@ You must install this project inside the FileMaker Server created website, be de
 
 Read about the [hosting bundle here](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/hosting-bundle?view=aspnetcore-6.0) and [download it here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-6.0.8-windows-hosting-bundle-installer).
 
-2. Copy the release files to the FMWebSite website located at `/FileMaker Server/HTTPServer/conf`.
+2. Copy the release files to the FMWebSite website located at `/FileMaker Server/HTTPServer/conf`. DO NOT copy web.config file. Keep existing file and modify accordingly per Step 6.
 
 Copy the binaries from the release and deploy those to the directory.
 
