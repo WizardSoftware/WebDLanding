@@ -17,4 +17,5 @@ public class AppModel
         uriString: $"{WebDirectHostScheme}://{WebDirectHostName}/fmi/webd/{DatabaseName}"
     );
 
+    public string? LoginHeaderMessage { get; set; }
 }

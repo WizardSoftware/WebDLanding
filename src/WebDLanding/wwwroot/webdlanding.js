@@ -28,9 +28,23 @@ window.addEventListener("popstate", function () {
   }
 });
 
+function setHeaderMessage() {
+  let msg = document
+    .getElementById("webdirect-frame")
+    ?.contentDocument?.getElementById('login_header_msg');
+
+  if (msg && loginHeaderMessage) {
+    // load message from AppModel.
+    msg.innerHTML = loginHeaderMessage;
+  } else {
+    setTimeout(setHeaderMessage, 200);
+  }
+}
+
 iframe = document.getElementById("webdirect-frame");
 iframe.addEventListener("load", function () {
   history.pushState(null, null, "");
+  setHeaderMessage();
 });
 
 window.addEventListener("load", function () {
