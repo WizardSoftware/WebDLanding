@@ -47,6 +47,7 @@ try
             ? $"{model.EntryHostScheme}://{model.EntryHostName}"
             : $"{siteSettings.WebdLandingMainUrl}";
         jsToWrite += $"let homeUri = '{homeUri}';";
+        jsToWrite += $"let loginHeaderMessage = '{model.LoginHeaderMessage ?? ""};";
 
         context.Response.ContentType = "application/javascript; charset=utf-8";
         await context.Response.WriteAsync(jsToWrite);
