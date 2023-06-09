@@ -30,8 +30,8 @@ window.addEventListener("popstate", function () {
 
 function setHeaderMessage() {
   let msg = document
-    .getElementsByTagName('iframe')[0]
-    .contentDocument.getElementById('login_header_msg');
+    .getElementById("webdirect-frame")
+    ?.contentDocument?.getElementById('login_header_msg');
 
   if (msg && loginHeaderMessage) {
     // load message from AppModel.
