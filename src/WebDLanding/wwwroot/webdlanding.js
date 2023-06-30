@@ -50,10 +50,13 @@ iframe.addEventListener("load", function () {
 window.addEventListener('load', function () {
   let url = new URL('https://www.google.com');
   let parentSearchParams = new URLSearchParams(window.location.search);
-  
-  if (parentSearchParams.has('script') && parentSearchParams.has('param')) {
+
+  if (parentSearchParams.has('script')) {
     url.searchParams.append('script', parentSearchParams.get('script'));
-    url.searchParams.append('param', parentSearchParams.get('param'));
+    
+    if (parentSearchParams.has('param')) {
+      url.searchParams.append('param', parentSearchParams.get('param'));
+    }
   }
   if (homeUri) {
     url.searchParams.append('homeurl', `${homeUri}/logoff.html`);
