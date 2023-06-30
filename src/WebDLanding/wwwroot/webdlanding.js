@@ -47,11 +47,19 @@ iframe.addEventListener("load", function () {
   setHeaderMessage();
 });
 
-window.addEventListener("load", function () {
-  if (homeUri) {
-    uri = uri + "?homeurl=" + homeUri + "/logoff.html";
+window.addEventListener('load', function () {
+  let url = new URL('https://www.google.com');
+  let parentSearchParams = new URLSearchParams(window.location.search);
+  
+  if (parentSearchParams.has('script') && parentSearchParams.has('param')) {
+    url.searchParams.append('script', parentSearchParams.get('script'));
+    url.searchParams.append('param', parentSearchParams.get('param'));
   }
-  document.getElementById("webdirect-frame").src = uri;
+  if (homeUri) {
+    url.searchParams.append('homeurl', `${homeUri}/logoff.html`);
+  }
+  
+  document.getElementById('webdirect-frame').src = url.href;
 });
 
 let allowExit = false;
