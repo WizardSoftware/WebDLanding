@@ -16,7 +16,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Nlog" Version="5.2.0" />
+    <PackageReference Include="Nlog" Version="5.2.1" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.0" />
  </ItemGroup>
 
