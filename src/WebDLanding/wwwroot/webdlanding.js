@@ -47,11 +47,23 @@ iframe.addEventListener("load", function () {
   setHeaderMessage();
 });
 
-window.addEventListener("load", function () {
-  if (homeUri) {
-    uri = uri + "?homeurl=" + homeUri + "/logoff.html";
+window.addEventListener('load', function () {
+  // use uri variable, which is set in global scope from set-vars.js
+  let url = new URL(uri);
+  let parentSearchParams = new URLSearchParams(window.location.search);
+
+  if (parentSearchParams.has('script')) {
+    url.searchParams.append('script', parentSearchParams.get('script'));
+    
+    if (parentSearchParams.has('param')) {
+      url.searchParams.append('param', parentSearchParams.get('param'));
+    }
   }
-  document.getElementById("webdirect-frame").src = uri;
+  if (homeUri) {
+    url.searchParams.append('homeurl', `${homeUri}/logoff.html`);
+  }
+  
+  document.getElementById('webdirect-frame').src = url.href;
 });
 
 let allowExit = false;
