@@ -48,7 +48,8 @@ iframe.addEventListener("load", function () {
 });
 
 window.addEventListener('load', function () {
-  let url = new URL('https://www.google.com');
+  // use uri variable, which is set in global scope from set-vars.js
+  let url = new URL(uri);
   let parentSearchParams = new URLSearchParams(window.location.search);
 
   if (parentSearchParams.has('script')) {
