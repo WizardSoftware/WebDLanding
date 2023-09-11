@@ -29,19 +29,19 @@ You must install this project inside the FileMaker Server created website, be de
 
 Read about the [hosting bundle here](https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/iis/hosting-bundle?view=aspnetcore-6.0) and [download it here](https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-aspnetcore-6.0.8-windows-hosting-bundle-installer).
 
-2. Copy the release files to the FMWebSite website located at `/FileMaker Server/HTTPServer/conf`. DO NOT copy web.config file. Keep existing file and modify accordingly per Step 6.
+3. Copy the release files to the FMWebSite website located at `/FileMaker Server/HTTPServer/conf`. DO NOT copy web.config file. Keep existing file and modify accordingly per Step 6.
 
 Copy the binaries from the release and deploy those to the directory.
 
-3. Create user-friendly DNS records for your Web-Direct solution pointed at the server.
+4. Create user-friendly DNS records for your Web-Direct solution pointed at the server.
 
 This must be configured in your DNS host.
 
-4. Ensure that the FMWebSite bindings are setup to handle this DNS record.
+5. Ensure that the FMWebSite bindings are setup to handle this DNS record.
 
 This could be with a wildcard binding, or specific bindings. The key is that all DNS entries used are the same for both the landing (entry) and the web direct host.
 
-5. Update `appsettings.json` to include your site(s) in the AppModels section and specify server mode (Single in this case).
+6. Update `appsettings.json` to include your site(s) in the AppModels section and specify server mode (Single in this case).
 
 ```json
   "WebDLandingConfig":{
@@ -56,7 +56,7 @@ This could be with a wildcard binding, or specific bindings. The key is that all
   ],
 ```
 
-6. Modify the `web.config` file to include the ASP.NET Core hosting modules:
+7. Modify the `web.config` file to include the ASP.NET Core hosting modules:
 
 ```xml
 <system.webServer>
@@ -80,13 +80,16 @@ You must create and install this project as a separate website on a web server. 
 
 ### Allow WebDLanding to iframe your Web-Direct Solutions
 
-Update web.config in the FileMaker Server root site `/FileMaker Server/HTTPServer/conf`:
+Update web.config in the FileMaker Server root site `/FileMaker Server/HTTPServer/conf` to tell CSP to allow frame ancestors:
 
 ```xml
-<add name="Content-Security-Policy" value="frame-ancestors 'self' https://www.example.com" />
+<httpProtocol>
+  <customHeaders>
+    <!-- other headers will probably already be here add this one -->
+    <add name="Content-Security-Policy" value="frame-ancestors 'self' https://www.example.com" />
 ```
 
-Replacing www.example.com with your cononical WebDLanding site from step #2 above. This allows WebDLanding to iframe in the content of the web direct session through it.
+Replacing <www.example.com> with your cononical WebDLanding site from step #2 above. This allows WebDLanding to iframe in the content of the web direct session through it.
 
 ### Add HomeURL Support to enable iframe inception escape
 
@@ -210,7 +213,7 @@ Add two PreConditions which are used by both outgoing rules.
 </preConditions>
 ```
 
-Finally add both of the above variables to the allowed variables list:
+Add both of the above variables to the allowed variables list:
 
 ```xml
 <allowedServerVariables>
