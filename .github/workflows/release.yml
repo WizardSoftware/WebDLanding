@@ -22,7 +22,7 @@ jobs:
           fetch-depth: 0
 
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v4.1.0
+        uses: actions/setup-dotnet@v4.3.0
 
       - name: Build
         shell: bash
